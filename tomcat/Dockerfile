@@ -1,21 +1,35 @@
-FROM manishkumr/ubuntu_jdk7_image
+FROM ubuntu:16.04
 
 MAINTAINER Manish Kumar <rishimanish123@gmail.com>
 
 ENV TOMCAT_VERSION 7.0.79
 
-RUN apt-get -qq update && \
-    apt-get -q -y upgrade && \
-    apt-get install -y sudo curl wget locales
+RUN \
+apt-get -qq update && \
+apt-get install -y sudo curl wget locales
 
 # Set locales
 RUN locale-gen en_AU.UTF-8
-ENV LANG en_AU.UTF-8  
-ENV LANGUAGE en_AU.UTF-8  
-ENV LC_ALL en_AU.UTF-8 
+ENV LANG en_AU.UTF-8
+ENV LANGUAGE en_AU.UTF-8
+ENV LC_ALL en_AU.UTF-8
 
-# Fix sh
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+RUN \
+apt-get update && \
+apt-get install -y git build-essential curl wget software-properties-common
+
+#JDK 8
+
+RUN  \
+echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \ 
+add-apt-repository -y ppa:webupd8team/java && \
+apt-get update && \
+apt-get install -y oracle-java8-installer unzip tar && \
+rm -rf /var/lib/apt/lists/* && \
+rm -rf /var/cache/oracle-jdk8-installer
+
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 ENV TOMCAT_MAJOR 7
 ENV TOMCAT_VERSION 7.0.82
@@ -79,5 +93,3 @@ CMD ["/opt/tomcat/bin/catalina.sh", "run"]
 
 #move xnat war to webapps 
 #RUN mv /opt/tomcat/xnat-web-1.7.0.war /opt/tomcat/webapps
-
-
