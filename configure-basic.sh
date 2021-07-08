@@ -73,7 +73,7 @@ echo "----------------------------"
 
 mkdir -p ./plugins
 
-CONTAINER_SERVICE_PLUGIN_VER=2.0.1
+CONTAINER_SERVICE_PLUGIN_VER=2.1.0
 SIMPLE_UPLOAD_PLUGIN_VER=2.04
 
 # Container service plugin
